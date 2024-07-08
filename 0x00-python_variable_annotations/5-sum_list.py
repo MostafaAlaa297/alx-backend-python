@@ -5,7 +5,7 @@ sum_list module
 from typing import List
 
 
-def sum_list(input_list: List[float])-> float:
+def sum_list(input_list: List[float]) -> float:
     """return the sum of a list"""
     res = 0
     for num in input_list:
