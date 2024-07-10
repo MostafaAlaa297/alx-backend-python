@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+"""
+async_generator module
+"""
+import asyncio
+import random
+
+
+async def async_generator():
+    """Get rand int from yield after 1 second for 10 times"""
+    async for i in range(10):
+        await asyncio.sleep(1)
+        yield random.randint(0, 10)
+
