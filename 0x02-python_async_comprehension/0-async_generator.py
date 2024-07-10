@@ -7,9 +7,9 @@ import asyncio
 import random
 
 
-async def async_generator():
+async def async_generator() -> float:
     """Get rand int from yield after 1 second for 10 times"""
-    async for i in range(10):
+    for i in range(10):
         await asyncio.sleep(1)
-        yield random.randint(0, 10)
+        yield random.uniform(0, 10)
 
