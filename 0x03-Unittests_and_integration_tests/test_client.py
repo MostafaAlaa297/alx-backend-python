@@ -8,9 +8,9 @@ from parameterized import parameterized
 import GithubOrgClient from client
 
 
-
 class TestGithubOrgClient(unittest.TestCase):
     def test_org():
+        """test using parameterized"""
         @parameterized.expand([
             ("google", {"login": "google", "id": 1}),
             ("abc", {"login": "abc", "id": 2}),
