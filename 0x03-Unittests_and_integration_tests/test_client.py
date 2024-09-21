@@ -5,16 +5,15 @@ test_client
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-import GithubOrgClient from client
+from client import GithubOrgClient
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    def test_org():
         """test using parameterized"""
-        @parameterized.expand([
-            ("google", {"login": "google", "id": 1}),
-            ("abc", {"login": "abc", "id": 2}),
-        ])
+    @parameterized.expand([
+        ("google", {"login": "google", "id": 1}),
+        ("abc", {"login": "abc", "id": 2}),
+    ])
 
     @patch('client.get_json', autospec=True)
     def test_org(self, org_name, expected_response, mock_get_json):
