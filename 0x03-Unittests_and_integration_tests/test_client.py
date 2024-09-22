@@ -5,7 +5,7 @@ test_client
 import unittest
 from unittest.mock import patch
 from parameterized import parameterized
-from client import GithubOrgClient  # Correct the import syntax
+from client import GithubOrgClient
 
 class TestGithubOrgClient(unittest.TestCase):
     """Test GithubOrgClient"""
@@ -14,7 +14,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google", {"login": "google", "id": 1}),
         ("abc", {"login": "abc", "id": 2}),
     ])
-    @patch('client.get_json', autospec=True)  # This should be applied after parameterized
+    @patch('client.get_json', autospec=True)
     def test_org(self, org_name, expected_response, mock_get_json):
         """Test that GithubOrgClient.org returns the correct value"""
         mock_get_json.return_value = expected_response
@@ -24,6 +24,19 @@ class TestGithubOrgClient(unittest.TestCase):
 
         mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
         self.assertEqual(response, expected_response)
+
+    def test_public_repo_url(self):
+       """Test that GithubOrgClient._public_repos_url returns the correct repos URL."""
+        expected_repos_url = "https://api.github.com/orgs/google/repos"
+        with mock.patch(
+               'GithubOrgClient._public_repos_url', new_callable=PropertyMock) as mock_org:
+            mock_org.return_value = { "repos_url": expected_repo_url }
+
+            client = GithubOrgClient("google")
+
+            self.assertEqual(client._public_repos_url, expected_repos_url)
+           
+
 
 if __name__ == '__main__':
     unittest.main()
