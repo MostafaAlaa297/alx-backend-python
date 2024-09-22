@@ -111,16 +111,16 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the patcher for requests.get and mock the response."""
-        cls.get_patcher = patch('request.get', autospec=True)
+        cls.get_patcher = patch('requests.get', autospec=True)
 
         cls.mock_get = cls.get_patcher.start()
 
-    def get_json_side_effect(url):
-        if url == f"https://api.github.com/orgs/google":
-            return cls.org_payload
-        elif url = f"https://api.github.com/orgs/google/repos":
-            return cls.repos_payload
-        return None
+        def get_json_side_effect(url):
+            if url == f"https://api.github.com/orgs/google":
+                return cls.org_payload
+            elif url == f"https://api.github.com/orgs/google/repos":
+                return cls.repos_payload
+            return None
 
     cls.mock_get.return_value.json.side_effect = get_json_side_effect
 
