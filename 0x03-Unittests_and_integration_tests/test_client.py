@@ -7,6 +7,7 @@ from unittest.mock import patch
 from parameterized import parameterized
 from client import GithubOrgClient
 
+
 class TestGithubOrgClient(unittest.TestCase):
     """Test GithubOrgClient"""
 
@@ -22,20 +23,22 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient(org_name)
         response = client.org
 
-        mock_get_json.assert_called_once_with(f"https://api.github.com/orgs/{org_name}")
+        mock_get_json.assert_called_once_with(
+                f"https://api.github.com/orgs/{org_name}")
         self.assertEqual(response, expected_response)
 
     def test_public_repos_url(self):
-       """Test that GithubOrgClient._public_repos_url returns the correct repos URL."""
+        """Test that
+        GithubOrgClient._public_repos_url returns the correct repos URL."""
         expected_repos_url = "https://api.github.com/orgs/google/repos"
         with mock.patch(
-               'GithubOrgClient._public_repos_url', new_callable=PropertyMock) as mock_org:
-            mock_org.return_value = { "repos_url": expected_repos_url }
+               'GithubOrgClient._public_repos_url', new_callable=PropertyMock
+               ) as mock_org:
+            mock_org.return_value = {"repos_url": expected_repos_url}
 
             client = GithubOrgClient("google")
 
             self.assertEqual(client._public_repos_url, expected_repos_url)
-
 
     @patch('client.get_json', autospec=True)
     def test_public_repos(self):
@@ -43,10 +46,11 @@ class TestGithubOrgClient(unittest.TestCase):
         expected_repos_url = "https://api.github.com/orgs/google/repos"
 
         with mock.patch(
-                'GithubOrgClient._public_repos_url', new_callable=PropertyMock) as mock_repo_url:
+                'GithubOrgClient._public_repos_url', new_callable=PropertyMock
+                ) as mock_repo_url:
             mock_repo_url.return_value = expected_repos_url
             mock_get_json.return_value = expeted_repos
-            
+
             client = GithubOrgClient("google")
 
             repos = client.public_repos()
