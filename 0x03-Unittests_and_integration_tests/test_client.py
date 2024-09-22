@@ -97,6 +97,7 @@ class TestGithubOrgClient(unittest.TestCase):
         result = client.has_license(repo, license_key)
         self.assertEqual(result, expected_result)
 
+
 @parameterized_class([{
     "org_payload": org_payload,
     "repos_payload": repos_payload,
@@ -110,7 +111,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def setUpClass(cls):
         """Set up the patcher for requests.get and mock the response."""
         cls.get_patcher = patch('requests.get', autospec=True)
-
         cls.mock_get = cls.get_patcher.start()
 
         def get_json_side_effect(url):
@@ -128,8 +128,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher.stop()
 
     def test_public_repos(self):
-        """Test GithubOrgClient.public_repos
-        method with the mocked payload."""
+        """Test GithubOrgClient.public_repos method with the mocked payload."""
         client = GithubOrgClient("google")
         repos = client.public_repos(repolicense="apache-2.0")
         self.assertEqual(repos, self.apache2_repos)
