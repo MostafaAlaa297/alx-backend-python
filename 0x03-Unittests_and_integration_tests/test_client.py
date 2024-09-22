@@ -43,7 +43,8 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch('client.get_json', autospec=True)
     def test_public_repos(self):
         """
-        Test that GithubOrgClient._public_repos_url returns the correct list of repos.
+        Test that GithubOrgClient._public_repos_url
+        returns the correct list of repos.
 
         Mocks:
             - GithubOrgClient._public_repos_url to return a fake repos URL.
