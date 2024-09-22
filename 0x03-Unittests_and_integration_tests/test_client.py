@@ -120,7 +120,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
                 return cls.repos_payload
             return None
 
-    cls.mock_get.return_value.json.side_effect = get_json_side_effect
+        cls.mock_get.return_value.json.side_effect = get_json_side_effect
 
     @classmethod
     def tearDownClass(cls):
@@ -130,7 +130,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos(self):
         """Test GithubOrgClient.public_repos
         method with the mocked payload."""
-        client = GithumOrgClient("google")
+        client = GithubOrgClient("google")
         repos = client.public_repos(repolicense="apache-2.0")
         self.assertEqual(repos, self.apache2_repos)
 
