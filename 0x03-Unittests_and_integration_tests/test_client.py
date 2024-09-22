@@ -3,7 +3,7 @@
 test_client
 """
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -71,8 +71,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
             mock_repo_url.assert_called_once()
 
-            mock_get_json.assert_called_once_with(expected_repos_url)
 
+            mock_get_json.assert_called_once_with(expected_repos_url)
 
 if __name__ == '__main__':
     unittest.main()
