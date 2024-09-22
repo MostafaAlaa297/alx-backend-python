@@ -42,6 +42,17 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch('client.get_json', autospec=True)
     def test_public_repos(self):
+        """
+        Test that GithubOrgClient._public_repos_url returns the correct list of repos.
+
+        Mocks:
+            - GithubOrgClient._public_repos_url to return a fake repos URL.
+            - get_json to return a predefined list of repositories.
+
+        validates:
+            - The returned list of repositories matches the mocked response
+            - _public_repos_url  and get_json are called exactly once
+        """
         expected_repos = ["repo1", "repo2"]
         expected_repos_url = "https://api.github.com/orgs/google/repos"
 
@@ -49,7 +60,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 'GithubOrgClient._public_repos_url', new_callable=PropertyMock
                 ) as mock_repo_url:
             mock_repo_url.return_value = expected_repos_url
-            mock_get_json.return_value = expeted_repos
+            mock_get_json.return_value = expected_repos
 
             client = GithubOrgClient("google")
 
