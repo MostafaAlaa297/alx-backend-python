@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -84,7 +85,8 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     def test_has_license(self, repo, license_key, expected_result):
         """
-        Test that GithubOrgClient.has_license checks if the repo has the specified license.
+        Test that GithubOrgClient.has_license
+        checks if the repo has the specified license.
 
         Args:
             repo (dict): Repository info
@@ -94,6 +96,46 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("google")
         result = client.has_license(repo, license_key)
         self.assertEqual(result, expected_result)
+
+
+@parameterized_class([
+    {
+        "org_payload": org_payload,
+        "repos_payload": repos_payload,
+        "expected_repos": expected_repos,
+        "apache2_repos": apache2_repos
+    }
+    ])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration test GithubOrgClient"""
+    @classmethod
+    def setUpClass(cls):
+        """Set up the patcher for requests.get and mock the response."""
+        cls.get_patcher = patch('request.get', autospec=True)
+
+        cls.mock_get = cls.get_patcher.start()
+
+    def get_json_side_effect(url):
+        if url == f"https://api.github.com/orgs/google":
+            return cls.org_payload
+        elif url = f"https://api.github.com/orgs/google/repos":
+            return cls.repos_payload
+        return None
+
+    cls.mock_get.return_value.json.side_effect = get_json_side_effect
+
+    @classmethod
+    def tearDownClass(cls):
+        """Stop the patcher after all tests."""
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """Test GithubOrgClient.public_repos
+        method with the mocked payload."""
+        client = GithumOrgClient("google")
+        repos = client.public_repos(repolicense="apache-2.0")
+        self.assertEqual(repos, self.apache2_repos)
+
 
 if __name__ == '__main__':
     unittest.main()
